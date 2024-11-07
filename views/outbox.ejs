@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Outbox</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border;
+
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 60px 20px 20px;
+        }
+
+        #header {
+            position: fixed;
+            height: 46.5px;
+            background-color: #000;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1;
+
+        }
+
+        #nav {
+            display: inline-block;
+        }
+
+        #nav>li {
+            display: inline-block;
+
+        }
+
+
+        #nav li {
+            position: relative;
+            list-style-type: none;
+
+        }
+
+        #nav2 li {
+            position: relative;
+            list-style-type: none;
+
+        }
+
+        #nav li a {
+            color: #fff;
+            text-decoration: none;
+            line-height: 46.5px;
+            padding: 0 24px;
+            display: block;
+
+        }
+
+        #nav2>li>a {
+            color: #fff;
+        }
+
+        #nav2 li a {
+
+            text-decoration: none;
+            line-height: 46.5px;
+            padding: 0 24px;
+            display: block;
+
+        }
+
+        #nav2 li:hover .subnav {
+            display: block;
+
+
+        }
+
+        #nav>li:hover>a {
+            color: #000;
+            background-color: #ccc;
+        }
+
+        #nav2>li:hover>a,
+        #nav2 .subnav>li:hover>a {
+            color: #000;
+            background-color: #ccc;
+        }
+
+
+
+        #header .right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            float: right;
+            text-decoration: none;
+            line-height: 46.5px;
+            display: block;
+        }
+
+        .subnav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+        }
+
+
+
+        .subnav li a {
+            color: #000;
+            line-height: 38.5px;
+            min-width: 128px;
+            padding: 0 16px;
+        }
+
+        #header .right-section div {
+            margin-bottom: 5px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #000;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .email {
+            display: flex;
+            align-items: center;
+            border: 2.5px solid #ccc;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            margin-right: 20px;
+            margin-left: 20px;
+        }
+
+        #emailList a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .email-checkbox {
+            margin-right: 10px;
+            flex: 0 0 auto;
+        }
+
+        .sender-name,
+        .subject,
+        .message-preview,
+        .time-sent {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .subject {
+            font-weight: bold;
+        }
+
+        .time-sent {
+            flex: 0 0 auto;
+            color: #888;
+        }
+
+        .pagination-delete {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            border: 1px solid #3f3c3c;
+            border-radius: 4px;
+        }
+
+        .page {
+
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .page:hover {
+            background-color: orange;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div id="main">
+            <div id="header">
+                <ul id="nav">
+                    <li><a href="/compose">COMPOSE</a></li>
+                    <li><a href="/inbox">INBOX</a></li>
+                    <li><a href="/outbox">OUTBOX</a></li>
+                </ul>
+                <div class="right-section">
+                    <ul id="nav2">
+                        <li><a href="">Welcome, <%= fullname %></a>
+                            <ul class="subnav">
+                                <li><a href="/logout">Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <div>
+            <h1>Outbox</h1>
+        </div>
+
+        <div id="emailList">
+            <% sentEmails.forEach(email=> { %>
+                <a href="/emailDetail/<%= email.id %>">
+                    <div class="email">
+                        <input type="checkbox" class="email-checkbox" value="<%= email.id %>">
+
+                        <div class="sender-name">
+                            <%= email.senderName %>
+                        </div>
+                        <div class="subject">
+                            <%= email.subject %>
+                        </div>
+                        <div class="message-preview">
+                            <%= email.messagePreview.length > 10 ? email.messagePreview.slice(0, 10) + '...' : email.messagePreview %>
+                        </div>
+                        <div class="time-sent">
+                            <%= email.timeSent %>
+                        </div>
+                    </div>
+                </a>
+                <% }); %>
+                    
+        </div>
+
+        <div class="pagination-delete">
+            <div class="pagination">
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <span class="page">
+                        <%= i %>
+                    </span>
+                    <% } %>
+            </div>
+
+            <button type="button" onclick="deleteSelectedEmails()">Delete</button>
+        </div>
+    </main>
+
+
+    <script>
+        function deleteSelectedEmails() {
+        const checkboxes = document.querySelectorAll('.email-checkbox:checked');
+        const emailIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+        fetch('/deleteEmails', {
+            method: 'POST',
+            body: JSON.stringify({ emailIds }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log(result);
+            alert('Emails deleted successfully');
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error deleting emails:', error);
+            alert('Error deleting emails. Please try again.');
+        });
+    }
+    </script>
+</body>
+
+</html>

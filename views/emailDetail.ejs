@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Email Detail</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    #header {
+        position: fixed;
+        height: 46.5px;
+        background-color: #000;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+
+    }
+
+    #nav {
+        display: inline-block;
+    }
+
+    #nav>li {
+        display: inline-block;
+
+    }
+
+
+    #nav li {
+        position: relative;
+        list-style-type: none;
+
+    }
+
+    #nav2 li {
+        position: relative;
+        list-style-type: none;
+
+    }
+
+    #nav li a {
+        color: #fff;
+        text-decoration: none;
+        line-height: 46.5px;
+        padding: 0 24px;
+        display: block;
+
+    }
+
+    #nav2>li>a {
+        color: #fff;
+    }
+
+    #nav2 li a {
+
+        text-decoration: none;
+        line-height: 46.5px;
+        padding: 0 24px;
+        display: block;
+
+    }
+
+    #nav2 li:hover .subnav {
+        display: block;
+
+
+    }
+
+    #nav>li:hover>a {
+        color: #000;
+        background-color: #ccc;
+    }
+
+    #nav2>li:hover>a,
+    #nav2 .subnav>li:hover>a {
+        color: #000;
+        background-color: #ccc;
+    }
+
+
+
+    #header .right-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        float: right;
+        text-decoration: none;
+        line-height: 46.5px;
+        display: block;
+    }
+
+    .subnav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+    }
+
+
+
+    .subnav li a {
+        color: #000;
+        line-height: 38.5px;
+        min-width: 128px;
+        padding: 0 16px;
+    }
+
+    #header .right-section div {
+        margin-bottom: 5px;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 60px 20px 20px;
+    }
+
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .email-detail {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .email-detail strong {
+        font-weight: bold;
+    }
+
+    .email-message {
+        white-space: pre-line;
+        line-height: 1.6;
+    }
+</style>
+
+<body>
+    <header>
+        <div id="main">
+            <div id="header">
+                <ul id="nav">
+                    <li><a href="/compose">COMPOSE</a></li>
+                    <li><a href="/inbox">INBOX</a></li>
+                    <li><a href="/outbox">OUTBOX</a></li>
+                </ul>
+                <div class="right-section">
+                    <ul id="nav2">
+                        <li><a href="">Welcome, <%= fullname %></a>
+                            <ul class="subnav">
+                                <li><a href="/logout">Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <h1>Email Detail</h1>
+        <div class="email-detail">
+            <strong>From:</strong>
+            <%= email.senderName %><br>
+                <strong>Subject:</strong>
+                <%= email.subject %><br>
+                    <strong>Time Received:</strong>
+                    <%= email.timeSent %><br>
+        </div>
+        <div class="email-detail">
+            <strong>Message:</strong><br>
+            <p class="email-message">
+                <%= email.message %>
+            </p>
+        </div>
+    </main>
+
+</body>
+
+</html>

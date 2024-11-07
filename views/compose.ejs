@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Compose Email</title>
+  <style>
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    #header {
+        position: fixed;
+        height: 46.5px;
+        background-color: #000;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+
+    }
+
+    #nav {
+        display: inline-block;
+    }
+
+    #nav>li {
+        display: inline-block;
+
+    }
+
+
+    #nav li {
+        position: relative;
+        list-style-type: none;
+
+    }
+
+    #nav2 li {
+        position: relative;
+        list-style-type: none;
+
+    }
+
+    #nav li a {
+        color: #fff;
+        text-decoration: none;
+        line-height: 46.5px;
+        padding: 0 24px;
+        display: block;
+
+    }
+
+    #nav2>li>a {
+        color: #fff;
+    }
+
+    #nav2 li a {
+
+        text-decoration: none;
+        line-height: 46.5px;
+        padding: 0 24px;
+        display: block;
+
+    }
+
+    #nav2 li:hover .subnav {
+        display: block;
+
+
+    }
+
+    #nav>li:hover>a {
+        color: #000;
+        background-color: #ccc;
+    }
+
+    #nav2>li:hover>a,
+    #nav2 .subnav>li:hover>a {
+        color: #000;
+        background-color: #ccc;
+    }
+
+
+
+    #header .right-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        float: right;
+        text-decoration: none;
+        line-height: 46.5px;
+        display: block;
+    }
+
+    .subnav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+    }
+
+
+
+    .subnav li a {
+        color: #000;
+        line-height: 38.5px;
+        min-width: 128px;
+        padding: 0 16px;
+    }
+
+    #header .right-section div {
+        margin-bottom: 5px;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 60px 20px 20px;
+    }
+
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      font-weight: bold;
+    }
+    select,
+    input[type="text"],
+    textarea,
+    input[type="file"],
+    input[type="submit"] {
+      width: calc(100% - 40px);
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    p {
+      margin-top: 10px;
+      color: #4CAF50;
+    }
+    .error {
+      margin-top: 10px;
+      color: #ff0000;
+    }
+  </style>
+</head>
+<body>
+    <header>
+        <div id="main">
+            <div id="header">
+                <ul id="nav">
+                    <li><a href="/compose">COMPOSE</a></li>
+                    <li><a href="/inbox">INBOX</a></li>
+                    <li><a href="/outbox">OUTBOX</a></li>
+                </ul>
+                <div class="right-section">
+                    <ul id="nav2">
+                        <li><a href="">Welcome, <%= fullname %></a>
+                            <ul class="subnav">
+                                <li><a href="/logout">Sign out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <main>
+        <h1>Compose Email</h1>
+        <form action="/send-email" method="POST" enctype="multipart/form-data">
+            <label for="recipient">Recipient:</label>
+            <select name="recipient" id="recipient">
+            <% users.forEach(user => { %>
+                <option value="<%= user.id %>"><%= user.fullname %></option>
+            <% }); %>
+            </select>
+            <br><br>
+            <label for="subject">Subject:</label>
+            <input type="text" id="subject" name="subject"><br><br>
+            <label for="body">Email Body:</label><br>
+            <textarea id="body" name="body" rows="5" cols="40"></textarea><br><br>
+            <label for="attachment">Attach File:</label>
+            <input type="file" id="attachment" name="attachment"><br><br>
+            <input type="submit" value="Send">
+        </form>
+        <% if (successMessage) { %>
+            <p><%= successMessage %></p>
+        <% } %>
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+    </main>
+</body>
+</html>
